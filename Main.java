@@ -3,20 +3,16 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 import javafx.application.Application;
-import javafx.beans.property.StringProperty;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -34,24 +30,23 @@ public class Main extends Application {
 
 		String word;
 
-		while(scan.hasNextLine())
-		{
+		while(scan.hasNextLine()) {
 			word = scan.nextLine();
 			addStudent(word);
 			totalCount++;
 		}
+		scan.close();
 		launch(args);
 	}
 
-	public static void addStudent(String name)
-	{
+	public static void addStudent(String name) {
+		
 		boolean isPresList = false;
 		String[] splitNames = name.split(",");
 		String ln = splitNames[0];
 		String fn = splitNames[1].trim();
 
-		if(fn.contains("*"))
-		{
+		if(fn.contains("*")) {
 			isPresList = true;
 			int starIndex = fn.indexOf("*");
 			fn = fn.substring(0, starIndex - 1);
@@ -114,8 +109,7 @@ public class Main extends Application {
 		primaryStage.show();
 	}
 
-	private GridPane search(String term)
-	{
+	private GridPane search(String term) {
 		GridPane retPane = new GridPane();
 
 		int matchCount = 0, errCount = 0;
@@ -126,53 +120,52 @@ public class Main extends Application {
 		if(splits.length > 1)
 			termLastName = splits[1];
 
-		for(int i = 0; i < totalCount; i++)
-		{
-			if(!isNumber) {
-				if(splits.length > 1)
-				{
-					if((students.get(i).getFirstName().contains(termFirstName) || students.get(i).getLastName().contains(termFirstName))
-						&& (students.get(i).getFirstName().contains(termLastName) || students.get(i).getLastName().contains(termLastName)))
-					{
-						if(students.get(i).getOnPresList()) {
-							retPane.add(new Label(students.get(i).getLastName() + ", " + students.get(i).getFirstName() + " -- President's List"), 0, matchCount);
-							matchCount++;
-						}
-						else {
-							retPane.add(new Label(students.get(i).getLastName() + ", " + students.get(i).getFirstName()), 0, matchCount);
-							matchCount++;
-						}
-					}
-				} else {
-					if((students.get(i).getFirstName().contains(termFirstName) || students.get(i).getLastName().contains(termFirstName)))
-					{
-						if(students.get(i).getOnPresList()) {
-							retPane.add(new Label(students.get(i).getLastName() + ", " + students.get(i).getFirstName() + " -- President's List"), 0, matchCount);
-							matchCount++;
-						}
-						else {
-							retPane.add(new Label(students.get(i).getLastName() + ", " + students.get(i).getFirstName()), 0, matchCount);
-							matchCount++;
-						}
-					}
-				}
-			}
-			else {
+		for(int i = 0; i < totalCount; i++) {
+			
+			if(isNumber) {
 				if(errCount < 1) {
 					retPane.add(new Label("No Numbers Allowed"), 0, 0);
 					errCount++;
 				}
+				break;
+			}
+			
+			if(splits.length > 1) {
+				
+				if((students.get(i).getFirstName().contains(termFirstName) || students.get(i).getLastName().contains(termFirstName))
+					&& (students.get(i).getFirstName().contains(termLastName) || students.get(i).getLastName().contains(termLastName))) {
+					
+					if(students.get(i).getOnPresList()) {
+						retPane.add(new Label(students.get(i).getLastName() + ", " + students.get(i).getFirstName() + " -- President's List"), 0, matchCount);
+						matchCount++;
+					} else {
+						retPane.add(new Label(students.get(i).getLastName() + ", " + students.get(i).getFirstName()), 0, matchCount);
+						matchCount++;
+					}
+				}
+			} else {
+				
+				if((students.get(i).getFirstName().contains(termFirstName) || students.get(i).getLastName().contains(termFirstName))) {
+					
+					if(students.get(i).getOnPresList()) {
+						retPane.add(new Label(students.get(i).getLastName() + ", " + students.get(i).getFirstName() + " -- President's List"), 0, matchCount);
+						matchCount++;
+					} else {
+						retPane.add(new Label(students.get(i).getLastName() + ", " + students.get(i).getFirstName()), 0, matchCount);
+						matchCount++;
+					}
+				}
 			}
 		}
-		return retPane;
+	return retPane;
 	}
 
-	private boolean retrieveText(String message) {
+	private boolean retrieveText(String message){
 		try {
 			Integer.parseInt(message);
 			isNumber = true;
 			return false;
-		} catch(NumberFormatException e){
+		} catch(NumberFormatException e) {
 			isNumber = false;
 			searchPerson = message;
 			return true;
