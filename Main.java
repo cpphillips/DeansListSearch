@@ -148,7 +148,10 @@ public class Main extends Application {
 				if((students.get(i).getFirstName().contains(termFirstName) || students.get(i).getLastName().contains(termFirstName))) {
 					
 					if(students.get(i).getOnPresList()) {
-						retPane.add(new Label(students.get(i).getLastName() + ", " + students.get(i).getFirstName() + " -- President's List"), 0, matchCount);
+						retPane.add(new Label(students.get(i).getLastName() + ", " + students.get(i).getFirstName()), 0, matchCount);
+						retPane.add(new Label(students.get(i).getLastName() + ", " + students.get(i).getFirstName()), 0, matchCount);
+						retPane.add(new Label(students.get(i).getLastName() + ", " + students.get(i).getFirstName()), 0, matchCount);
+						retPane.add(new Label(students.get(i).getLastName() + ", " + students.get(i).getFirstName()), 0, matchCount);
 						matchCount++;
 					} else {
 						retPane.add(new Label(students.get(i).getLastName() + ", " + students.get(i).getFirstName()), 0, matchCount);
